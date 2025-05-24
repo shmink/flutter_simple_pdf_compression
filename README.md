@@ -1,39 +1,58 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Simple PDF Compression
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter package for compressing PDFs. This package provides a simple use but with a more complex algorithm to work out optimal compression ratios.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **PDF Compression**: Compress PDF files with different compression levels
+- **Customizable**: Configure compression parameters to suit your needs
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml` file:
+
+```bash
+flutter pub add simple_pdf_compression
+```
+or
+```yaml
+dependencies:
+  simple_pdf_compression: ^0.0.1
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'dart:io';
+import 'package:simple_pdf_compression/simple_pdf_compression.dart';
+
+void main() async {
+  final inputPdf = File('/path/to/your/input.pdf');
+
+  final compressedPdf = await compressPdf(
+    inputPdf,
+    thresholdSize: 500 * 1024, // Optional: 500 KB
+    quality: 60,               // Optional: 0 (most compression) to 100 (lowest compression)
+  );
+
+  print('Compressed PDF saved at: ${compressedPdf.path}');
+  print('Original size: ${inputPdf.lengthSync()} bytes');
+  print('Compressed size: ${compressedPdf.lengthSync()} bytes');
+}
 ```
 
-## Additional information
+## Additional Information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- The compressed files are saved to the temporary directory by default
+- Without passing `quality` the quality of the PDF is worked out and IQR is used to work out an appropriate compression amount.
+- Inspired by @rathorerahul586 package `pdf_handler`
+
+## License
+
+This project is licensed under the MIT License
